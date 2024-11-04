@@ -22,7 +22,7 @@ To get started with Webserv, follow these installation steps:
 
 First, clone the Webserv repository to your local machine using Git:
 
-   git clone https://github.com/Vikingu-del/Webserv.git
+   git clone https://github.com/vanichx/WebServer.git
 
 ## 2. Build the Project
 Im using Makefile for composition of my project so just do to the root directory and type:
@@ -45,8 +45,8 @@ Webserv is open-sourced under the MIT License. See the [LICENSE](./LICENSE) file
 
 This project was brought to life with the invaluable contributions of the following team members:
 
-- [Erik Seferi](https://github.com/Vikingu-del) - Project Lead
-- [Ivan Petrunin](https://github.com/vanichx) - Parser of the Configuration File
-- [Kyrylo Ilchenko](https://github.com/kilchenk) - ServerSocket Manager
+- [Ivan Petrunin](https://github.com/vanichx) - Parser of the Configuration File & Owner of this Repo
+- [Erik Seferi](https://github.com/Vikingu-del) - Team Lead & CEO
+- [Kyrylo Ilchenko](https://github.com/kilchenk) - ServerSocket Manager and just a good guy
 
 We extend our deepest gratitude to everyone who contributed to the development and success of Webserv.

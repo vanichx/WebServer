@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Serv Team</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav>
+            <div class="menu">
+                <div class="logo">
+                    <a link="index.html"><img src="../imgs/games/logo.png"></a>
+                </div>
+                <input type="checkbox" id="check">
+                <label for="check" class="checkbtn">
+                    <i class="fas fa-bars"></i>
+                </label>
+                <ul>
+                    <li>
+                        <div class="MobNavBtns">
+                            <button>Play Now</button>
+                        </div>
+                    </li>
+                    <li><a href="../indexes/index.html">Home</a></li>
+                    <li><a href="../indexes/play.html">Play</a></li>
+                    <li><a href="../indexes/about.html">About</a></li>
+                    <li><a href="../indexes/cookies.html">Cookies</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Subscribe Section -->
+            <div class="form">
+                <section id="email" class="card subscribe">
+                    <h2>Subscribe to our Newsletter</h2>
+                    <form id="subscribeForm" action="/cgi-bin/subscribe.py" method="POST">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </section>
+                <section id="post" class="card subscribe">
+                    <h2>Post Content</h2>
+                    <form action="/cgi-bin/upload.py" method="POST" enctype="multipart/form-data">
+                        <label for="email">Post:</label>
+                        <!-- Drop Zone for files -->
+                        <div id="dropZone">
+                            Drag and drop a file here or click to select a file.
+                        </div>
+                        <input type="file" id="file" name="filename" style="display:none;">
+                        <textarea id="postContent" name="content" required hidden></textarea>
+                        <button type="submit">Post</button>
+                    </form>
+                </section>
+                <section id="delete" class="card subscribe">
+                    <h2>Delete Content</h2>
+                    <form id="deleteForm" action="/cgi-bin/delete.py" method="POST">
+                        <label for="filename">Content Filename:</label>
+                        <input type="text" id="filename" name="filename" required>
+                        <button type="submit">Delete</button>
+                    </form>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-bottom">
+                <p>© Game Hub 2022, All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.getElementById('subscribeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            fetch('/cgi-bin/subscribe.py', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Subscription successful!');
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Handle File Upload via Drag-and-Drop
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('file');
+        const postContent = document.getElementById('postContent');
+
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.classList.add('dragging');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragging');
+        });
+
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.classList.remove('dragging');
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileUpload(files[0]);
+            }
+        });
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                handleFileUpload(fileInput.files[0]);
+            }
+        });
+
+        function handleFileUpload(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                postContent.value = event.target.result;
+                postContent.removeAttribute('hidden');
+            };
+            reader.readAsText(file);
+        }
+
+        // Handle Content Post Form Submission
+        document.getElementById('postForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            fetch('/cgi-bin/upload.py', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Post successful!');
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Handle Content Delete Form Submission
+        document.getElementById('deleteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            fetch('/cgi-bin/delete.py', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Deletion successful!');
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>
